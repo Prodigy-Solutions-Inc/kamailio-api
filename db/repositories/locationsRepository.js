@@ -18,7 +18,7 @@ class LocationsRepository {
 
     async isRegistered(username, domain) {
         try {
-            const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ssZ');
+            const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
                 .where('expires', '>', datetime)
@@ -40,10 +40,9 @@ class LocationsRepository {
 
     async isGloballyRegistered(username) {
         try {
-            const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ssZ');
+            const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
-                .where('expires', '>', datetime)
                 .andWhere('username', username)
                 .orderBy('expires', 'desc')
                 .first();
@@ -58,6 +57,8 @@ class LocationsRepository {
             throw err;
         }
     }
+
+    /* where('expires', '>', datetime) */
 
     async getRegistrationExpiration(username, domain) {
         try {
