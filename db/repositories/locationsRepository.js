@@ -21,7 +21,7 @@ class LocationsRepository {
         try {
             // const datetime = moment.utc().add(1, 'seconds');
             const datetime = new Date();
-            datetime.setUTCSeconds(datetime.getUTCSeconds() + 6000);
+            datetime.setUTCSeconds(datetime.getUTCSeconds() + 60);
 
             if (domain && domain.length > 0) {
                 return await this.uow._models.Locations
@@ -47,12 +47,6 @@ class LocationsRepository {
             throw err;
         }
     }
-
-    /*
-    .where('expires', '>', datetime)
-    .andWhere('username', username)
-    .orderBy('expires', 'desc') 
-    */
 
     async getRegistrationExpiration(username, domain) {
         try {
