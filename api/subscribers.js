@@ -64,7 +64,7 @@ module.exports = [
         path: '/v1/subscriber',
         handler: async (request, h) => {
             const logger = request.server.app.logger;
-            const { username, domain, id } = request.params;
+            const { username, domain, id } = request.query;
             logger.info(`Getting subscriber: username: ${username} domain: ${domain} id: ${id}`);
             const uow = await request.app.getNewUoW();
             let subscriber = null;
