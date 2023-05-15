@@ -33,7 +33,7 @@ class LocationsRepository {
                     .query(this.uow._transaction)
                     .where('username', username)
                     .first();
-                this.uow._logger.error(registration);
+                this.uow._logger.info(registration);
                 return registration;
             }
         } catch (err) {
