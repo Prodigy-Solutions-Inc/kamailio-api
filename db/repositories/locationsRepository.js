@@ -19,7 +19,7 @@ class LocationsRepository {
 
     async getRegistration(username, domain) {
         try {
-            const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
+            const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
             if (domain && domain.length > 0) {
                 return await this.uow._models.Locations
                     .query(this.uow._transaction)
@@ -32,6 +32,7 @@ class LocationsRepository {
                 const registration = await this.uow._models.Locations
                     .query(this.uow._transaction)
                     .where('username', username)
+                    .andWhere('expires', '>', datetime)
                     .orderBy('expires', 'desc')
                     .first();
                 this.uow._logger.info(registration);
