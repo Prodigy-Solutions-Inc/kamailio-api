@@ -41,11 +41,15 @@ class LocationsRepository {
     async isGloballyRegistered(username) {
         try {
             const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
-            const location = await this.uow._models.Locations
+            // const location =
+            await this.uow._models.Locations
                 .query(this.uow._transaction)
                 .findOne({
                     username: username
-                }).then(() => {
+                }).then((location) => {
+
+                    this.uow._logger.error(`location: ${location}`);
+
                     if (location && location.length > 0) {
                         return true;
                     } else {
