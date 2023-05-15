@@ -16,20 +16,24 @@ class LocationsRepository {
         }
     }
 
-    async isRegistered(username, domain) {
+    async getRegistration(username, domain) {
         try {
             const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
-            const location = await this.uow._models.Locations
-                .query(this.uow._transaction)
-                .where('expires', '>', datetime)
-                .andWhere('username', username)
-                .andWhere('domain', domain)
-                .orderBy('expires', 'desc')
-                .first();
-            if (location && location.length > 0) {
-                return true;
+            if (domain && domain.length > 0) {
+                return await this.uow._models.Locations
+                    .query(this.uow._transaction)
+                    .where('expires', '>', datetime)
+                    .andWhere('username', username)
+                    .andWhere('domain', domain)
+                    .orderBy('expires', 'desc')
+                    .first();
             } else {
-                return false
+                return await this.uow._models.Locations
+                    .query(this.uow._transaction)
+                    .where('expires', '>', datetime)
+                    .andWhere('username', username)
+                    .orderBy('expires', 'desc')
+                    .first();
             }
         } catch (err) {
             this.uow._logger.error(err);
@@ -37,35 +41,6 @@ class LocationsRepository {
             throw err;
         }
     }
-
-    async isGloballyRegistered(username) {
-        try {
-            const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
-            // const location =
-            await this.uow._models.Locations
-                .query(this.uow._transaction)
-                .findOne({
-                    username: username
-                }).then((location) => {
-
-                    this.uow._logger.error(`location: ${location}`);
-
-                    if (location && location.length > 0) {
-                        return true;
-                    } else {
-                        return false
-                    }
-                });
-        } catch (err) {
-            this.uow._logger.error(err);
-            this.uow._logger.error(`Failed to retrieve registration for username: ${username}`);
-            throw err;
-        }
-    }
-
-    /* .where('username', username).orderBy('expires', 'desc')
-    */
-    /* where('expires', '>', datetime) */
 
     async getRegistrationExpiration(username, domain) {
         try {

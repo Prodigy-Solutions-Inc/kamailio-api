@@ -31,13 +31,13 @@ module.exports = [
             logger.info(`Verifying registration status for username: ${username} domain: ${domain}`);
             const uow = await request.app.getNewUoW();
             try {
-                let isRegistered = false;
-                if (username && username.length > 0 && domain && domain.length > 0) {
-                    isRegistered = await uow.locationsRepository.isRegistered(username, domain);
-                } else if (username && username.length > 0) {
-                    isRegistered = await uow.locationsRepository.isGloballyRegistered(username);
+                const registration = await uow.locationsRepository.getRegistration(username, domain);
+                logger.info(`registration: ${registration}`);
+                if (registration && registration.length > 0) {
+                    return true;
+                } else {
+                    return false
                 }
-                return isRegistered
             } catch (err) {
                 logger.error(err);
                 logger.error('Error fetching registration status');
