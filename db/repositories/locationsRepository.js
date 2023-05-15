@@ -19,7 +19,7 @@ class LocationsRepository {
 
     async getRegistration(username, domain) {
         try {
-            const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
+            const datetime = moment.utc().add(1, 'seconds');
             if (domain && domain.length > 0) {
                 return await this.uow._models.Locations
                     .query(this.uow._transaction)
