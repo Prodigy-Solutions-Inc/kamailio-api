@@ -21,7 +21,7 @@ class LocationsRepository {
         try {
             // const datetime = moment.utc().add(1, 'seconds');
             const datetime = new Date();
-            datetime.setUTCSeconds(datetime.getUTCSeconds() + 60);
+            datetime.setUTCSeconds(datetime.getUTCSeconds() + 6000);
 
             if (domain && domain.length > 0) {
                 return await this.uow._models.Locations
