@@ -43,8 +43,9 @@ class LocationsRepository {
             const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
-                .where('username', username)
-                .orderBy('expires', 'desc')
+                .where({
+                    username: username
+                })
                 .first();
             if (location && location.length > 0) {
                 return true;
@@ -58,6 +59,8 @@ class LocationsRepository {
         }
     }
 
+    /* .where('username', username).orderBy('expires', 'desc')
+    */
     /* where('expires', '>', datetime) */
 
     async getRegistrationExpiration(username, domain) {
