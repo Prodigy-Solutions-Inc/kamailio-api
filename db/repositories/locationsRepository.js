@@ -22,10 +22,30 @@ class LocationsRepository {
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
                 .where('expires', '>', datetime)
-                .andWhere('username', username).andWhere(function () {
-                    this.where('domain', domain).orWhereNull('domain')
-                }).
-                orderBy('expires', 'desc')
+                .andWhere('username', username)
+                .andWhere('domain', domain)
+                .orderBy('expires', 'desc')
+                .first();
+            if (location && location.length > 0) {
+                return true;
+            } else {
+                return false
+            }
+        } catch (err) {
+            this.uow._logger.error(err);
+            this.uow._logger.error(`Failed to retrieve registration for username: ${username}`);
+            throw err;
+        }
+    }
+
+    async isGloballyRegistered(username) {
+        try {
+            const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ssZ');
+            const location = await this.uow._models.Locations
+                .query(this.uow._transaction)
+                .where('expires', '>', datetime)
+                .andWhere('username', username)
+                .orderBy('expires', 'desc')
                 .first();
             if (location && location.length > 0) {
                 return true;

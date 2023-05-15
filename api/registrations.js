@@ -34,6 +34,8 @@ module.exports = [
                 let isRegistered = false;
                 if (username && username.length > 0 && domain && domain.length > 0) {
                     isRegistered = await uow.locationsRepository.isRegistered(username, domain);
+                } else if (username && username.length > 0) {
+                    isRegistered = await uow.locationsRepository.isGloballyRegistered(username);
                 }
                 return isRegistered
             } catch (err) {
