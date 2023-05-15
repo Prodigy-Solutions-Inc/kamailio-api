@@ -43,13 +43,7 @@ module.exports = [
             }
         },
         options: {
-            auth: false,
-            validate: {
-                params: {
-                    username: Joi.string().optional(),
-                    domain: Joi.string().optional()
-                }
-            }
+            auth: false
         }
     },
     {
@@ -70,13 +64,7 @@ module.exports = [
             }
         },
         options: {
-            auth: false,
-            validate: {
-                query: {
-                    username: Joi.string().required(),
-                    domain: Joi.string().required()
-                }
-            }
+            auth: false
         }
     }
 ]
