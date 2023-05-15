@@ -32,6 +32,7 @@ class LocationsRepository {
                 const registration = await this.uow._models.Locations
                     .query(this.uow._transaction)
                     .where('username', username)
+                    .orderBy('expires', 'desc')
                     .first();
                 this.uow._logger.info(registration);
                 return registration;
