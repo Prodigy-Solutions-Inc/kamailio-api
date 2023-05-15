@@ -69,7 +69,7 @@ module.exports = [
             const uow = await request.app.getNewUoW();
             let subscriber = null;
             if (id && id.length() > 0) {
-                subscriber = await uow.subscribersRepository.getSubscriberByUsernameAndDomain(username, domain);
+                subscriber = await uow.subscribersRepository.getSubscriberById(id);
             } else if (username && username.length > 0 && domain && domain.length > 0) {
                 subscriber = await uow.subscribersRepository.getSubscriberByUsernameAndDomain(username, domain);
             }
