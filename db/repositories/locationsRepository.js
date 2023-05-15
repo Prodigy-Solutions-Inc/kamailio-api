@@ -43,15 +43,15 @@ class LocationsRepository {
             const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
-                .where({
+                .findOne({
                     username: username
-                })
-                .first();
-            if (location && location.length > 0) {
-                return true;
-            } else {
-                return false
-            }
+                }).then(() => {
+                    if (location && location.length > 0) {
+                        return true;
+                    } else {
+                        return false
+                    }
+                });
         } catch (err) {
             this.uow._logger.error(err);
             this.uow._logger.error(`Failed to retrieve registration for username: ${username}`);
@@ -65,13 +65,22 @@ class LocationsRepository {
 
     async getRegistrationExpiration(username, domain) {
         try {
-            return await this.uow._models.Locations
-                .query(this.uow._transaction)
-                .where('username', username)
-                .andWhere('domain', domain)
-                .orderBy('expires', 'desc')
-                .first()
-                .select('expires');
+            if (domain && domain.length > 0) {
+                return await this.uow._models.Locations
+                    .query(this.uow._transaction)
+                    .where('username', username)
+                    .andWhere('domain', domain)
+                    .orderBy('expires', 'desc')
+                    .first()
+                    .select('expires');
+            } else {
+                return await this.uow._models.Locations
+                    .query(this.uow._transaction)
+                    .where('username', username)
+                    .orderBy('expires', 'desc')
+                    .first()
+                    .select('expires');
+            }
         } catch (err) {
             this.uow._logger.error(err);
             this.uow._logger.error(`Failed to get registration expiration for username: ${username}`);
