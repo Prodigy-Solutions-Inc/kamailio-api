@@ -38,7 +38,6 @@ class LocationsRepository {
                     .andWhere('expires', '>', datetime)
                     .orderBy('expires', 'desc')
                     .first();
-                this.uow._logger.info(registration);
                 return registration;
             }
         } catch (err) {
