@@ -31,6 +31,7 @@ class LocationsRepository {
             } else {
                 const registration = await this.uow._models.Locations
                     .query(this.uow._transaction)
+                    .where('username', username)
                     .first();
                 this.uow._logger.error(registration);
                 return registration;
