@@ -43,7 +43,7 @@ class LocationsRepository {
             const datetime = moment.utc().add(1, 'seconds').format('YYYY-MM-DDTHH:mm:ss');
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
-                .andWhere('username', username)
+                .where('username', username)
                 .orderBy('expires', 'desc')
                 .first();
             if (location && location.length > 0) {
