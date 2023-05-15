@@ -30,9 +30,6 @@ class LocationsRepository {
             } else {
                 return await this.uow._models.Locations
                     .query(this.uow._transaction)
-                    .where('expires', '>', datetime)
-                    .andWhere('username', username)
-                    .orderBy('expires', 'desc')
                     .first();
             }
         } catch (err) {
@@ -41,6 +38,12 @@ class LocationsRepository {
             throw err;
         }
     }
+
+    /*
+    .where('expires', '>', datetime)
+    .andWhere('username', username)
+    .orderBy('expires', 'desc') 
+    */
 
     async getRegistrationExpiration(username, domain) {
         try {
