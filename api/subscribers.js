@@ -94,7 +94,7 @@ module.exports = [
         options: {
             auth: false,
             validate: {
-                params: {
+                query: {
                     id: Joi.string().uuid().optional(),
                     username: Joi.string().optional(),
                     domain: Joi.string().optional()
