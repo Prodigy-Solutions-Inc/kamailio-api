@@ -18,13 +18,14 @@ class LocationsRepository {
 
     async isRegistered(username, domain) {
         try {
-            const datetime = moment.utc().add(1, 'minutes')
+            const datetime = moment.utc().add(1, 'minutes').format('YYYY-MM-DDTHH:mm:ssZ');
             const location = await this.uow._models.Locations
                 .query(this.uow._transaction)
                 .where('expires', '>', datetime)
-                .andWhere('username', username)
-                .andWhere('domain', domain)
-                .orderBy('expires', 'desc')
+                .andWhere('username', username).andWhere(function () {
+                    this.where('domain', domain).orWhereNull('domain')
+                }).
+                orderBy('expires', 'desc')
                 .first();
             if (location && location.length > 0) {
                 return true;
