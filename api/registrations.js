@@ -33,18 +33,10 @@ module.exports = [
             try {
                 const registration = await uow.locationsRepository.getRegistration(username, domain);
                 logger.info(`registration: ${registration}`);
-                if (registration) {
-                    return {
-                        meta: {
-                            success: true
-                        }
-                    };
+                if (registration && registration != null && registration.constructor.name === "Object") {
+                    return true;
                 } else {
-                    return {
-                        meta: {
-                            success: false
-                        }
-                    };
+                    return false;
                 }
             } catch (err) {
                 logger.error(err);

@@ -1,4 +1,5 @@
 const moment = require('moment');
+const registrations = require('../../api/registrations');
 
 class LocationsRepository {
     constructor(uow) {
@@ -28,9 +29,11 @@ class LocationsRepository {
                     .orderBy('expires', 'desc')
                     .first();
             } else {
-                return await this.uow._models.Locations
+                const registration = await this.uow._models.Locations
                     .query(this.uow._transaction)
                     .first();
+                this.uow._logger.error(registration);
+                return registration;
             }
         } catch (err) {
             this.uow._logger.error(err);
