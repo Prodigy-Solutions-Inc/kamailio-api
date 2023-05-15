@@ -197,33 +197,5 @@ module.exports = [
                 }
             }
         }
-    },
-    {
-        method: 'GET',
-        path: '/v1/subscriber',
-        handler: async (request, h) => {
-            const logger = request.server.app.logger;
-            const { username, domain } = request.query;
-            logger.debug(`Fetching subscriber with username: ${username} at ${domain}`);
-
-            const uow = await request.app.getNewUoW();
-            try {
-                const subscriber = await uow.subscribersRepository.getSubscriberByUsernameAndDomain(username, domain);
-                return subscriber || null;
-            } catch (err) {
-                logger.error(err);
-                logger.error('Error fetching subscriber');
-                return Boom.badImplementation('Error fetching subscriber');
-            }
-        },
-        options: {
-            auth: false,
-            validate: {
-                query: {
-                    username: Joi.string().required(),
-                    domain: Joi.string().required()
-                }
-            }
-        }
     }
 ]
