@@ -27,7 +27,7 @@ module.exports = [
         path: '/v1/registration',
         handler: async (request, h) => {
             const logger = request.server.app.logger;
-            const { username, domain } = request.params;
+            const { username, domain } = request.query;
             logger.info(`Verifying registration status for username: ${username} domain: ${domain}`);
             const uow = await request.app.getNewUoW();
             try {
@@ -43,7 +43,13 @@ module.exports = [
             }
         },
         options: {
-            auth: false
+            auth: false,
+            validate: {
+                query: {
+                    username: Joi.string().optional(),
+                    domain: Joi.string().optional()
+                }
+            }
         }
     },
     {
@@ -64,7 +70,13 @@ module.exports = [
             }
         },
         options: {
-            auth: false
+            auth: false,
+            validate: {
+                query: {
+                    username: Joi.string().optional(),
+                    domain: Joi.string().optional()
+                }
+            }
         }
     }
 ]
